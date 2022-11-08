@@ -34,7 +34,7 @@ const make = [
     {
         img : 'https://images.unsplash.com/photo-1587004956875-c61776f95b10?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80',
         name : 'Milk',
-        description : 'Milk is a white liquid food produced by the mammary glands of mammals. It is the primary source of nutrition for young mammals before they are able to digest solid food. Immune factors and immune-modulating components in milk contribute to milk immunity. As an agricultural product, dairy milk is collected from farm animals. In 2011, dairy farms produced around 730 million tonnes (800 million short tons) of milk[3] from 260 million dairy cows.[4] India is the worlds largest producer of milk and the leading exporter of skimmed milk powder, but it exports few other milk products.[5][6] Because there is an ever-increasing demand for dairy products within India, it could eventually become a net importer of dairy products.',
+        description : 'Milk is a white liquid food produced by the mammary glands of. It is the primary source of for young mammals before they are able to digest solid food. Factors and immune-modulating  in milk contribute to milk immunity. As an agricultural product, dairy milk is collected from farm animals. In 2011, dairy farms produced around 730 million tonnes (800 million short tons) of milk[3] from 260 million dairy cows.[4] India is the worlds largest producer of milk and the leading exporter of skimmed milk powder, but it exports few other milk products.[5][6] Because there is an ever-increasing demand for dairy products within India, it could eventually become a net importer of dairy products.',
         rating : 5,
         price : 90,
         deliveryTime : 40,
