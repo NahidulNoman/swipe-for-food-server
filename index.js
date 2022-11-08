@@ -48,6 +48,14 @@ async function run() {
       res.send(result);
     });
 
+    app.post('/services', async (req,res) => {
+      const query = req.body;
+      const result = await serviceCollection.insertOne(query);
+      res.send(result);
+      console.log(result)
+    })
+
+    // review api
     app.get("/review/:id", async (req, res) => {
       const id = req.params.id;
       const query = { reviewId: id };
@@ -56,7 +64,6 @@ async function run() {
       res.send(result);
     });
 
-    // review api
     app.post("/review", async (req, res) => {
       const query = req.body;
       const result = await reviewCollection.insertOne(query);
@@ -70,7 +77,7 @@ async function run() {
         query = {
           email: req.query.email,
         };
-      };
+      }
       const cursor = reviewCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
@@ -78,7 +85,7 @@ async function run() {
 
     // app.get('/review/:id')
 
-    app.get('/review', async (req,res) => {
+    app.get("/review", async (req, res) => {
       // const id = req.params.id;
       // const query = {_id: ObjectId(id)};
       let query = {};
@@ -86,13 +93,12 @@ async function run() {
         query = {
           reviewId: req.query.reviewId,
         };
-      };
+      }
       console.log(query);
       const cursor = reviewCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
-
   } finally {
   }
 }
