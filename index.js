@@ -48,6 +48,14 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/review/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { reviewId: id };
+      const cursor = reviewCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // review api
     app.post("/review", async (req, res) => {
       const query = req.body;
@@ -62,12 +70,29 @@ async function run() {
         query = {
           email: req.query.email,
         };
-      }
+      };
       const cursor = reviewCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
-    
+
+    // app.get('/review/:id')
+
+    app.get('/review', async (req,res) => {
+      // const id = req.params.id;
+      // const query = {_id: ObjectId(id)};
+      let query = {};
+      if (req.query.reviewId) {
+        query = {
+          reviewId: req.query.reviewId,
+        };
+      };
+      console.log(query);
+      const cursor = reviewCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
   } finally {
   }
 }
