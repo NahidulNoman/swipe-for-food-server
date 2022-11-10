@@ -25,6 +25,7 @@ async function run() {
     const serviceCollection = client
       .db("swipeForFood")
       .collection("foodServices");
+
     const reviewCollection = client.db("swipeForFood").collection("foodReview");
 
     app.get("/servicehome", async (req, res) => {
@@ -64,6 +65,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { reviewId: id };
+      const cursor = await reviewCollection.findOne(query);
+      res.send(cursor);
+    });
+
     app.post("/review", async (req, res) => {
       const query = req.body;
       const result = await reviewCollection.insertOne(query);
@@ -75,9 +83,40 @@ async function run() {
       const id = req.params.id;
       const query = {_id : ObjectId(id)};
       const result = await reviewCollection.deleteOne(query);
-      res.send(result); 
+      res.send(result);
+    });
+
+    app.get('/review/:id', async (req,res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = {_id: ObjectId(id)};
+      const result = await reviewCollection.findOne(query);
+      res.send(result);
+      console.log(result);
+    });
+
+
+
+
+    app.patch('/review/:id', async (req,res) => {
+      const id = req.params.id;
+      const filtered = {_id: ObjectId(id)};
+      const updateReview = req.body;
+      const updateDoc = {
+          $set: {
+            name : updateReview.name,
+            message : updateReview.message,
+          }
+      }
+      const result = await reviewCollection.updateOne(filtered,updateDoc);
+      res.send(result);
       console.log(result)
-    })
+    });
+
+
+
+
+
 
     app.get("/review", async (req, res) => {
       let query = {};
