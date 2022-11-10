@@ -4,6 +4,7 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
+// const jwt = require('jsonwebtoken');
 
 // middle wares
 app.use(cors());
@@ -20,6 +21,22 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
+// jwt
+// function verifyJWT(req,res,next){
+//   const author = req.headers.authorization;
+//   if(!author){
+//     return res.status(403).send({message : 'unauthorize access'})
+//   }
+//   const token = author.split(' ')[1];
+//   jwt.verify(token, process.env.TOKEN, function(err,decoded){
+//     if(err){
+//       return res.status(403).send({message : 'unauthorize access'})
+//     }
+//     req.decoded = decoded;
+//     next();
+//   })
+// };
+
 async function run() {
   try {
     const serviceCollection = client
@@ -27,6 +44,13 @@ async function run() {
       .collection("foodServices");
 
     const reviewCollection = client.db("swipeForFood").collection("foodReview");
+
+    // jwt token
+    // app.post('/jwt', (req,res) => {
+    //   const user = req.body;
+    //   const token = jwt.sign(user, process.env.TOKEN,{expiresIn : '10h'});
+    //   res.send({token});
+    // });
 
     app.get("/servicehome", async (req, res) => {
       const query = {};
@@ -65,9 +89,10 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/reviews/:id", async (req, res) => {
+    app.get("/rev/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { reviewId: id };
+      // const query = { reviewId: id };
+      const query = {_id : ObjectId(id)};
       const cursor = await reviewCollection.findOne(query);
       res.send(cursor);
     });
@@ -95,9 +120,6 @@ async function run() {
       console.log(result);
     });
 
-
-
-
     app.patch('/review/:id', async (req,res) => {
       const id = req.params.id;
       const filtered = {_id: ObjectId(id)};
@@ -108,17 +130,19 @@ async function run() {
             message : updateReview.message,
           }
       }
+      // console.log(updateDoc)
       const result = await reviewCollection.updateOne(filtered,updateDoc);
       res.send(result);
       console.log(result)
     });
 
 
-
-
-
-
     app.get("/review", async (req, res) => {
+
+      // if(req.decoded.email !== req.query.email){
+      //   return res.status(403).send({message : 'unauthorize access'})
+      // }
+
       let query = {};
       if (req.query.email) {
         query = {
@@ -141,7 +165,7 @@ async function run() {
           reviewId: req.query.reviewId,
         };
       }
-      console.log(query);
+      // console.log(query);
       const cursor = reviewCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
